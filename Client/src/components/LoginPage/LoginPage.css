@@ -1,0 +1,74 @@
+﻿.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.form-box {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.btn-register {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.btn-register:hover {
+    background-color: #0056b3;
+}
+
+.btn-register:active {
+    background-color: #003a6e;
+}
+
+/* Стили для маленьких экранов (максимальная ширина 768px) */
+@media (max-width: 768px) {
+    .container {
+        height: auto;
+        /* Удалить фиксированную высоту на маленьких экранах */
+    }
+
+    .form-box {
+        width: 90%;
+        /* Уменьшить ширину формы на маленьких экранах */
+    }
+
+    /* Дополнительные адаптивные стили для маленьких экранов */
+    /* Пример: Уменьшить отступы, изменить размеры шрифтов и элементов формы и кнопки */
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

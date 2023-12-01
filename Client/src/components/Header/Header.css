@@ -1,0 +1,32 @@
+﻿header {
+    background-color: #007bff;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: solid 1px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0364cc;
+}
+
+@media (max-width: 768px) {
+    button {
+        padding: 5px 10px;
+    }
+}

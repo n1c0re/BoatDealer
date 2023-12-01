@@ -1,0 +1,27 @@
+﻿.car-catalog {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.car-tile {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    width: 330px;
+    box-shadow: 0 0 5px #ccc;
+}
+
+.car-link {
+    text-decoration: none;
+    color: #000;
+}
+
+.car-tile:hover {
+    box-shadow: 0 0 10px #007bff;
+}
+
+.field-not-filled {
+    border: 1px solid red;
+    background-color: #ffecec;
+}

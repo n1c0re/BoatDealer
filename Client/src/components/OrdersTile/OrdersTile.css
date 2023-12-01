@@ -1,0 +1,8 @@
+﻿.order-tile {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    width: 330px;
+    box-shadow: 0 0 5px #ccc;
+}

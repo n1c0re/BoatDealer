@@ -1,0 +1,57 @@
+﻿.add-car-modal {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-height: 80%;
+    overflow-y: auto;
+    width: 80%;
+    max-width: 600px;
+}
+
+.add-car-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.add-car-modal input,
+.add-car-modal select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.field-not-filled {
+    border-color: red;
+}
+
+.add-car-modal button {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-car-modal button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.add-car-modal button:hover:not([disabled]) {
+    background-color: #0056b3;
+}
+
+.field-not-filled {
+    border-color: red;
+}
