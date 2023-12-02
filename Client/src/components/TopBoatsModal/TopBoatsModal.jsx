@@ -1,8 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import './TopCarsModal.css'
+import './TopBoatsModal.css'
 
-function TopCarsModal() {
+function TopBoatsModal() {
 	const [topModels, setTopModels] = useState([])
 
 	useEffect(() => {
@@ -23,14 +23,14 @@ function TopCarsModal() {
 	console.log(topModels)
 
 	return (
-		<div className='top-cars-modal'>
-			<h2>Самая дешевая машина: </h2>
+		<div className='top-boats-modal'>
+			<h2>Самая дешевая лодка: </h2>
 			<li>
 				<strong>{topModels[0]?.model_name}</strong> - Всего продано:
 				{topModels[0]?.total_sales} Цена: {topModels[0]?.price}{' '}
 				{topModels[0]?.currency}
 			</li>
-			<h2>Самые продаваемые машины:</h2>
+			<h2>Самые продаваемые лодки:</h2>
 			<ul>
 				{topModels.map((model, index) => (
 					<li key={index}>
@@ -43,4 +43,4 @@ function TopCarsModal() {
 	)
 }
 
-export default TopCarsModal
+export default TopBoatsModal

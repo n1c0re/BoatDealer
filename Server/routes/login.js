@@ -25,26 +25,26 @@ loginRouter.post('/', async (req, res) => {
 			let userData = {
 				userId: response[0].user_id,
 				user_name: response[0].user_name,
-				user_type: response[0].user_type,
+				user_type_id: response[0].user_type_id,
 			}
 
-			if (userData.user_type === 'Пользователь') {
-				const clientQuery = `SELECT client_id FROM Client WHERE user_id = $1`
-				const clientValues = [userData.userId]
+			if (userData.user_type_id === 2) {
+				const customerQuery = `SELECT customer_id FROM Customers WHERE user_id = $1`
+				const customerValues = [userData.userId]
 
-				const clientResponse = await client
-					.query(clientQuery, clientValues)
+				const customerResponse = await client
+					.query(customerQuery, customerValues)
 					.then(response => response.rows)
 
-				if (clientResponse.length > 0) {
-					userData.client_id = clientResponse[0].client_id
+				if (customerResponse.length > 0) {
+					userData.customer_id = customerResponse[0].customer_id
 				}
-			} else if (userData.user_type === 'Продавец') {
-				const clientQuery = `SELECT seller_id FROM seller WHERE user_id = $1`
-				const clientValues = [userData.userId]
+			} else if (userData.user_type_id === 3) {
+				const customerQuery = `SELECT seller_id FROM seller WHERE user_id = $1`
+				const customerValues = [userData.userId]
 
 				const sellerResponse = await client
-					.query(clientQuery, clientValues)
+					.query(customerQuery, customerValues)
 					.then(response => response.rows)
 
 				if (sellerResponse.length > 0) {

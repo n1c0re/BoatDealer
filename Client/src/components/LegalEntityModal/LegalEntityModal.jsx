@@ -3,7 +3,7 @@ import axios from 'axios'
 import './LegalEntityModal.css'
 
 function LegalEntityModal() {
-	const [carNames, setCarNames] = useState([])
+	const [boatNames, setBoatNames] = useState([])
 	const [selectedCar, setSelectedCar] = useState('')
 	const [list, setList] = useState([])
 	const [showList, setShowList] = useState(false)
@@ -19,7 +19,7 @@ function LegalEntityModal() {
 			setList(response.data)
 			setShowList(true)
 		} catch (error) {
-			console.error('Error fetching car names:', error)
+			console.error('Error fetching boat names:', error)
 		}
 	}
 
@@ -27,11 +27,11 @@ function LegalEntityModal() {
 		async function fetchCarNames() {
 			try {
 				const response = await axios.get(
-					'http://localhost:4000/api/queries/cars/names'
+					'http://localhost:4000/api/queries/boats/names'
 				)
-				setCarNames(response.data)
+				setBoatNames(response.data)
 			} catch (error) {
-				console.error('Error fetching car names:', error)
+				console.error('Error fetching boat names:', error)
 			}
 		}
 
@@ -43,16 +43,16 @@ function LegalEntityModal() {
 		setShowList(false)
 	}
 
-	console.log(carNames)
+	console.log(boatNames)
 	console.log(list)
 
 	return (
 		<div className='legal-entity-modal'>
-			<label htmlFor='carSelect'>Выберите машину: </label>
-			<select name='car_id' onChange={handleCarSelect}>
-				<option value=''>Выберите машину</option>
-				{carNames.map(car => (
-					<option value={car.name}>{car.name}</option>
+			<label htmlFor='boatSelect'>Выберите лодку: </label>
+			<select name='boat_id' onChange={handleCarSelect}>
+				<option value=''>Выберите лодку</option>
+				{boatNames.map(boat => (
+					<option value={boat.model_name}>{boat.model_name}</option>
 				))}
 			</select>
 			<button onClick={getLegalEntityList}>Получить</button>
@@ -61,7 +61,7 @@ function LegalEntityModal() {
 					<p>Перечень юридических лиц (всего {list.length}):</p>
 					<ul>
 						{list.map(list => (
-							<li key={list.user_name}>{list.user_name}</li>
+							<li key={list.user_name}>{list.customer_name}</li>
 						))}
 					</ul>
 				</div>

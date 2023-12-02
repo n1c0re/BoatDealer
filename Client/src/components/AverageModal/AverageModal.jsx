@@ -4,7 +4,7 @@ import './AverageModal.css'
 
 function AverageModal() {
 	const [averageSales, setAverageSales] = useState([])
-	const [carNames, setCarNames] = useState([])
+	const [boatNames, setBoatNames] = useState([])
 	const [selectedCar, setSelectedCar] = useState('')
 	const [showList, setShowList] = useState(false)
 
@@ -34,33 +34,41 @@ function AverageModal() {
 		async function fetchCarNames() {
 			try {
 				const response = await axios.get(
-					'http://localhost:4000/api/queries/cars/names'
+					'http://localhost:4000/api/queries/boats/names'
 				)
-				setCarNames(response.data)
+				setBoatNames(response.data)
 			} catch (error) {
-				console.error('Error fetching car names:', error)
+				console.error('Error fetching boat names:', error)
 			}
 		}
 
 		fetchCarNames()
 	}, [])
 
+	function handleCarSelect(event) {
+		setSelectedCar(event.target.value)
+		setShowList(false)
+	}
+
 	console.log(averageSales)
 
 	return (
 		<div className='average-modal'>
-			<label htmlFor='carSelect'>Выберите машину: </label>
-			<select name='car_id' onChange={handleCarSelect}>
-				<option value=''>Выберите машину</option>
-				{carNames.map(car => (
-					<option value={car.name}>{car.name}</option>
+			<label htmlFor='boatSelect'>Выберите лодку: </label>
+			<select name='boat_id' onChange={handleCarSelect}>
+				<option value=''>Выберите лодку</option>
+				{boatNames.map(boat => (
+					<option value={boat.model_name}>{boat.model_name}</option>
 				))}
 			</select>
 			<button onClick={getAverageSales}>Получить</button>
 			{showList && (
-                // {}
+				// {}
 				<div>
-					<p>Среднее число продаж за месяц: {averageSales[0].average_sales_per_month}</p>
+					<p>
+						Среднее число продаж за месяц:{' '}
+						{averageSales[0].average_sales_per_month}
+					</p>
 				</div>
 			)}
 		</div>

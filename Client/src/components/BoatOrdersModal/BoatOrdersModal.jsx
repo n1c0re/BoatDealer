@@ -1,13 +1,13 @@
 ﻿import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import './CarOrdersModal.css'
+import './BoatOrdersModal.css'
 
-function CarOrdersModal() {
+function BoatOrdersModal() {
 	const [salesData, setSalesData] = useState([])
 	const [startDate, setStartDate] = useState('')
 	const [endDate, setEndDate] = useState('')
-	const [selectedCar, setSelectedCar] = useState('')
-	const [carNames, setCarNames] = useState([])
+	const [selectedBoat, setSelectedBoat] = useState('')
+	const [boatNames, setBoatNames] = useState([])
 	const [showList, setShowList] = useState(false)
 
 	async function fetchSalesData() {
@@ -16,7 +16,7 @@ function CarOrdersModal() {
 				'http://localhost:4000/api/queries/sales',
 				{
 					params: {
-						name: selectedCar,
+						model_name: selectedBoat,
 						startDate,
 						endDate,
 					},
@@ -33,11 +33,11 @@ function CarOrdersModal() {
 		async function fetchCarNames() {
 			try {
 				const response = await axios.get(
-					'http://localhost:4000/api/queries/cars/names'
+					'http://localhost:4000/api/queries/boats/names'
 				)
-				setCarNames(response.data)
+				setBoatNames(response.data)
 			} catch (error) {
-				console.error('Error fetching car names:', error)
+				console.error('Error fetching boat names:', error)
 			}
 		}
 
@@ -45,17 +45,17 @@ function CarOrdersModal() {
 	}, [])
 
 	function handleCarSelect(event) {
-		setSelectedCar(event.target.value)
+		setSelectedBoat(event.target.value)
 		setShowList(false)
 	}
 
 	console.log(startDate, endDate)
 	return (
-		<div className='car-orders-modal'>
-			<select name='car_id' onChange={handleCarSelect}>
-				<option value=''>Выберите машину</option>
-				{carNames.map(car => (
-					<option value={car.name}>{car.name}</option>
+		<div className='boat-orders-modal'>
+			<select name='boat_id' onChange={handleCarSelect}>
+				<option value=''>Выберите лодку</option>
+				{boatNames.map(boat => (
+					<option value={boat.model_name}>{boat.model_name}</option>
 				))}
 			</select>
 			<input
@@ -77,7 +77,7 @@ function CarOrdersModal() {
 					<p>Общее число покупок: {salesData.length}</p>
 					<ul>
 						{salesData.map(sale => (
-							<li key={sale.user_name}>{sale.user_name}</li>
+							<li key={sale.customer_name}>{sale.customer_name}</li>
 						))}
 					</ul>
 				</div>
@@ -86,4 +86,4 @@ function CarOrdersModal() {
 	)
 }
 
-export default CarOrdersModal
+export default BoatOrdersModal

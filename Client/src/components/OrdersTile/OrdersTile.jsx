@@ -4,23 +4,23 @@ import { AuthContext } from '../../AuthContext'
 
 function OrdersTile({ order }) {
 	const {
-		zakaz_id,
+		order_id,
 		seller_name,
 		zakaz_date,
 		zakaz_status,
-		car_id,
-		car_name,
-		car_price,
-		currency,
+		boat_id,
+		boat_name,
+		boat_price,
+		boat_currency,
 	} = order
 
 	const { loggedInUser } = useContext(AuthContext)
 
 	async function handleDeleteOrder() {
-		console.log(zakaz_id)
+		console.log(order_id)
 		try {
 			await axios.delete(`http://localhost:4000/api/orders/`, {
-				params: { orderId: zakaz_id },
+				params: { orderId: order_id },
 			})
 		} catch (error) {
 			console.error('Error:', error)
@@ -28,11 +28,11 @@ function OrdersTile({ order }) {
 	}
 
 	async function handleSubmitOrder() {
-		console.log(loggedInUser.seller_id, zakaz_id)
+		console.log(loggedInUser.seller_id, order_id)
 		try {
 			await axios.post(`http://localhost:4000/api/orders/submit`, {
 				sellerId: loggedInUser.seller_id,
-				orderId: zakaz_id,
+				orderId: order_id,
 			})
 		} catch (error) {
 			console.error('Error:', error)
@@ -62,9 +62,9 @@ function OrdersTile({ order }) {
 				const response = await axios.post(
 					'http://localhost:4000/api/agreement',
 					{
-						carId: car_id,
+						boatId: boat_id,
 						supplierId: supplier.supplier_id,
-						zakaz_id: zakaz_id
+						order_id: order_id,
 					}
 				)
 				console.log('Agreement added:', response.data)
@@ -84,18 +84,17 @@ function OrdersTile({ order }) {
 	}
 
 	return (
-		<div key={zakaz_id} className='order-tile'>
+		<div key={order_id} className='order-tile'>
 			<p>{seller_name}</p>
 			<p>{zakaz_date}</p>
 			<p>{zakaz_status}</p>
-			<p>{car_id}</p>
-			<p>{car_name}</p>
+			<p>{boat_name}</p>
 			<p>
-				{car_price} {currency}
+				{boat_price} {boat_currency}
 			</p>
 			{zakaz_status == 'В обработке' ? (
 				<>
-					{loggedInUser.user_type == 'Продавец' ? (
+					{loggedInUser.user_type_id == 3 ? (
 						<button onClick={handleSubmitOrder}>Подтвердить заказ</button>
 					) : (
 						<></>
@@ -104,7 +103,7 @@ function OrdersTile({ order }) {
 				</>
 			) : (
 				<>
-					{loggedInUser.user_type == 'Админ' ? (
+					{loggedInUser.user_type_id == 1 ? (
 						<>
 							{zakaz_status !== 'Отправлен' && !isSendingOrder ? (
 								<button onClick={handleSendOrder}>Отправить заказ</button>

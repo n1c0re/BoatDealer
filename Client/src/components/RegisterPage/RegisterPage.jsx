@@ -81,6 +81,24 @@ function RegisterPage() {
 						/>
 					</div>
 					<div className='form-group'>
+						<label htmlFor='adress'>Адрес</label>
+						<input
+							type='text'
+							id='adress'
+							name='adress'
+							onChange={handleInputChange}
+						/>
+					</div>
+					<div className='form-group'>
+						<label htmlFor='phone'>Телефон</label>
+						<input
+							type='text'
+							id='phone'
+							name='phone'
+							onChange={handleInputChange}
+						/>
+					</div>
+					<div className='form-group'>
 						<label>Являетесь юридическим лицом?</label>
 						<div>
 							<input

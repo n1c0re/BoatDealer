@@ -1,16 +1,16 @@
 ﻿import React, { useState } from 'react'
 import axios from 'axios'
 import './AdminPanel.css'
-import AddCarModal from '../AddCarModal/AddCarModal'
+import AddBoatModal from '../AddBoatModal/AddBoatModal'
 import OrdersModal from '../OrdersModal/OrdersModal'
 import LegalEntityModal from '../LegalEntityModal/LegalEntityMOdal'
-import CarOrdersModal from '../CarOrdersModal/CarOrdersModal'
-import TopCarsModal from '../TopCarsModal/TopCarsModal'
+import BoatOrdersModal from '../BoatOrdersModal/BoatOrdersModal'
+import TopBoatsModal from '../TopBoatsModal/TopBoatsModal'
 import AverageModal from '../AverageModal/AverageModal'
-import ClientsModal from '../ClientsModal/ClientsModal'
+import CustomersModal from '../CustomersModal/CustomersModal'
 
 function AdminPanel() {
-	const [showAddCarModal, setShowAddCarModal] = useState(false)
+	const [showAddBoatModal, setShowAddBoatModal] = useState(false)
 	const [showOrdersModal, setShowOrdersModal] = useState(false)
 	const [showLegalEntityModal, setShowLegalEntityModal] = useState(false)
 	const [showCarOrdersModal, setShowCarOrdersModal] = useState(false)
@@ -18,40 +18,42 @@ function AdminPanel() {
 	const [showAverageModal, setShowAverageModal] = useState(false)
 	const [showClientsModal, setShowClientsModal] = useState(false)
 
-	const [newCar, setNewCar] = useState({
-		car_brand_id: 1,
-		body_type_id: 1,
-		gear_type_id: 1,
-		fuel_type_id: 1,
-		equipment_type_id: 1,
+	const [newBoat, setNewBoat] = useState({
+		boat_type_id: 1,
+		engine_type_id: 1,
+		manufacturer_count_id: 1,
 		currency_id: 1,
 	})
 
 	const [filledFields, setFilledFields] = useState({
-		name: false,
-		car_brand_id: false,
-		price: false,
-		currency_id: false,
-		body_type_id: false,
-		gear_type_id: false,
+		model_name: false,
 		engine_capacity: false,
 		cylinder_count: false,
 		engine_power: false,
 		torque: false,
 		max_speed: false,
-		acceleration_time: false,
-		production_date: false,
+		seating_capacity: false,
 		length: false,
 		width: false,
 		height: false,
-		track_fuel_consumption: false,
-		city_fuel_consumption: false,
-		fuel_type_id: false,
-		equipment_type_id: false,
+		fuel_consumption_90: false,
+		fuel_consumption_120: false,
+		boat_weight: false,
+		manufacturer_country_id: false,
+		manufacturer_name: false,
+		keel_transom: false,
+		keel_midsection: false,
+		production_date: false,
+		price: false,
+		currency_id: false,
+		boat_type_id: false,
+		engine_type_id: false,
 	})
 
+	console.log(filledFields);
+
 	const toggleAddCarModal = () => {
-		setShowAddCarModal(!showAddCarModal)
+		setShowAddBoatModal(!showAddBoatModal)
 		setShowOrdersModal(false)
 		setShowLegalEntityModal(false)
 		setShowCarOrdersModal(false)
@@ -61,7 +63,7 @@ function AdminPanel() {
 	}
 
 	const toggleOrdersModal = () => {
-		setShowAddCarModal(false)
+		setShowAddBoatModal(false)
 		setShowOrdersModal(!showOrdersModal)
 		setShowLegalEntityModal(false)
 		setShowCarOrdersModal(false)
@@ -71,7 +73,7 @@ function AdminPanel() {
 	}
 
 	const toggleLegalEntityModal = () => {
-		setShowAddCarModal(false)
+		setShowAddBoatModal(false)
 		setShowOrdersModal(false)
 		setShowLegalEntityModal(!showLegalEntityModal)
 		setShowCarOrdersModal(false)
@@ -81,7 +83,7 @@ function AdminPanel() {
 	}
 
 	const toggleCarOrdersModal = () => {
-		setShowAddCarModal(false)
+		setShowAddBoatModal(false)
 		setShowOrdersModal(false)
 		setShowLegalEntityModal(false)
 		setShowCarOrdersModal(!showCarOrdersModal)
@@ -91,7 +93,7 @@ function AdminPanel() {
 	}
 
 	const toggleTopCarsModal = () => {
-		setShowAddCarModal(false)
+		setShowAddBoatModal(false)
 		setShowOrdersModal(false)
 		setShowLegalEntityModal(false)
 		setShowCarOrdersModal(false)
@@ -101,7 +103,7 @@ function AdminPanel() {
 	}
 
 	const toggleAverageModal = () => {
-		setShowAddCarModal(false)
+		setShowAddBoatModal(false)
 		setShowOrdersModal(false)
 		setShowLegalEntityModal(false)
 		setShowCarOrdersModal(false)
@@ -111,7 +113,7 @@ function AdminPanel() {
 	}
 
 	const toggleClientsModal = () => {
-		setShowAddCarModal(false)
+		setShowAddBoatModal(false)
 		setShowOrdersModal(false)
 		setShowLegalEntityModal(false)
 		setShowCarOrdersModal(false)
@@ -120,10 +122,10 @@ function AdminPanel() {
 		setShowClientsModal(!showClientsModal)
 	}
 
-	async function handleAddCar(event) {
+	async function handleAddBoat(event) {
 		event.preventDefault()
 		try {
-			await axios.post('http://localhost:4000/api/cars', newCar)
+			await axios.post('http://localhost:4000/api/boats', newBoat)
 			getCars()
 		} catch (error) {
 			console.error('Error:', error)
@@ -132,7 +134,7 @@ function AdminPanel() {
 
 	function handleInputChange(event) {
 		const { name, value } = event.target
-		setNewCar(prevState => ({
+		setNewBoat(prevState => ({
 			...prevState,
 			[name]: value,
 		}))
@@ -140,7 +142,7 @@ function AdminPanel() {
 			...prevState,
 			[name]: value !== '',
 		}))
-		console.log(newCar)
+		console.log(newBoat)
 	}
 
 	function areAllFieldsFilled() {
@@ -166,21 +168,21 @@ function AdminPanel() {
 			</div>
 
 			<div className='modal'>
-				{showAddCarModal && (
-					<AddCarModal
+				{showAddBoatModal && (
+					<AddBoatModal
 						getFieldClass={getFieldClass}
 						areAllFieldsFilled={areAllFieldsFilled}
 						handleInputChange={handleInputChange}
-						handleAddCar={handleAddCar}
+						handleAddBoat={handleAddBoat}
 					/>
 				)}
 
 				{showOrdersModal && <OrdersModal />}
 				{showLegalEntityModal && <LegalEntityModal />}
-				{showCarOrdersModal && <CarOrdersModal />}
-				{showTopCarsModal && <TopCarsModal />}
+				{showCarOrdersModal && <BoatOrdersModal />}
+				{showTopCarsModal && <TopBoatsModal />}
 				{showAverageModal && <AverageModal />}
-				{showClientsModal && <ClientsModal />}
+				{showClientsModal && <CustomersModal />}
 			</div>
 		</div>
 	)

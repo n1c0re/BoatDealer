@@ -6,7 +6,7 @@ const supplierRouter = express.Router()
 supplierRouter.get('/', async (req, res) => {
 	const client = await startConnection()
 
-	const query = `SELECT * FROM supplier`
+	const query = `SELECT * FROM suppliers`
 
 	try {
 		const response = await client.query(query).then(response => response.rows)

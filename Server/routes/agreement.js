@@ -4,14 +4,14 @@ import startConnection from '../DataAccess/startConnection.js'
 const agreementRouter = express.Router()
 
 agreementRouter.post('/', async (req, res) => {
-	const { carId, supplierId, zakaz_id } = req.body
+	const { boatId, supplierId, order_id } = req.body
 
 	const client = await startConnection()
 
 	try {
 		const result = await client.query(
-			`INSERT INTO Agreement (car_id, agreement_date) VALUES ($1, NOW()) RETURNING agreement_id`,
-			[carId]
+			`INSERT INTO Agreement (boat_id, agreement_date) VALUES ($1, NOW()) RETURNING agreement_id`,
+			[boatId]
 		)
 
 		const agreementId = result.rows[0].agreement_id
@@ -22,11 +22,11 @@ agreementRouter.post('/', async (req, res) => {
 		)
 
         await client.query(
-					`UPDATE Zakaz SET zakaz_status = 'Отправлен' WHERE zakaz_id = $1`,
-					[zakaz_id]
+					`UPDATE Orders SET zakaz_status = 'Отправлен' WHERE order_id = $1`,
+					[order_id]
 				)
 
-		res.status(201).json({ success: true, zakaz_id })
+		res.status(201).json({ success: true, order_id })
 	} catch (error) {
 		console.error('Error:', error)
 		res

@@ -1,4 +1,4 @@
-﻿.add-car-modal {
+﻿.add-boat-modal {
     position: fixed;
     top: 10%;
     left: 50%;
@@ -14,14 +14,14 @@
     max-width: 600px;
 }
 
-.add-car-modal form {
+.add-boat-modal form {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.add-car-modal input,
-.add-car-modal select {
+.add-boat-modal input,
+.add-boat-modal select {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
@@ -33,7 +33,7 @@
     border-color: red;
 }
 
-.add-car-modal button {
+.add-boat-modal button {
     padding: 8px;
     border: none;
     border-radius: 4px;
@@ -43,12 +43,12 @@
     transition: background-color 0.3s ease;
 }
 
-.add-car-modal button:disabled {
+.add-boat-modal button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
-.add-car-modal button:hover:not([disabled]) {
+.add-boat-modal button:hover:not([disabled]) {
     background-color: #0056b3;
 }
 

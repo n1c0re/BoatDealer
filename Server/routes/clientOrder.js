@@ -6,10 +6,11 @@ const clientOrderRouter = express.Router()
 const client = await startConnection()
 
 clientOrderRouter.post('/', async (req, res) => {
-	const { client_id, zakaz_id } = req.body
+	const { customer_id, order_id } = req.body
 
-	const query = `INSERT INTO ClientZakaz (client_id, zakaz_id) VALUES ($1, $2)`
-	const values = [client_id, zakaz_id]
+	console.log(customer_id);
+	const query = `INSERT INTO CustomerOrder (customer_id, order_id) VALUES ($1, $2)`
+	const values = [customer_id, order_id]
 
 	try {
 		const response = await client

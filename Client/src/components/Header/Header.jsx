@@ -28,7 +28,7 @@ function Header() {
 			</Link>
 			<h1>Дилер по продаже автомобилей</h1>
 			<div className='auth-buttons'>
-				{loggedInUser.user_type == 'Админ' ? (
+				{loggedInUser.user_type_id == 1 ? (
 					<button onClick={handleAdmin}>Админ панель</button>
 				) : (
 					<button onClick={handleCabinet}>Личный кабинет</button>

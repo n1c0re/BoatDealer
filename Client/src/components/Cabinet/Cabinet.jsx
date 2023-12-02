@@ -9,13 +9,13 @@ function Cabinet() {
 
 	const [orders, setOrders] = useState([])
 
-	const getClientOrders = async () => {
+	const getCustomerOrders = async () => {
 		try {
 			const response = await axios.get(
-				'http://localhost:4000/api/orders/client',
+				'http://localhost:4000/api/orders/customer',
 				{
 					params: {
-						client_id: loggedInUser.client_id,
+						customer_id: loggedInUser.customer_id,
 					},
 				}
 			)
@@ -35,7 +35,7 @@ function Cabinet() {
 	}
 
 	useEffect(() => {
-		loggedInUser.user_type == 'Пользователь' ? getClientOrders() : getOrders()
+		loggedInUser.user_type_id == 2 ? getCustomerOrders() : getOrders()
 	}, [])
 
 	console.log(orders)

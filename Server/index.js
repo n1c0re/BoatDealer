@@ -6,6 +6,8 @@ dotenv.config()
 
 const { Pool } = pkg
 
-const pool = new Pool({ connectionString: process.env.DB_KEY })
+const pool = new Pool({
+	connectionString: 'ссылка на бд',
+})
 
 export default pool

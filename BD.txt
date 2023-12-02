@@ -1,0 +1,227 @@
+CREATE TABLE BoatType(
+    boat_type_id SERIAL PRIMARY KEY,
+    boat_type VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE UserTypes(
+    user_type_id SERIAL PRIMARY KEY,
+    user_type VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Users(
+    user_id SERIAL PRIMARY KEY,
+    login VARCHAR(25) NOT NULL,
+    password VARCHAR(25) NOT NULL,
+    customer_name VARCHAR(50) NOT NULL,
+    customer_adress VARCHAR(50) NOT NULL,
+    customer_phone VARCHAR(50) NOT NULL,
+    is_legal_entity BOOLEAN NOT NULL,
+    user_type_id INTEGER REFERENCES UserTypes(user_type_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Customers(
+    customer_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Seller(
+    seller_id SERIAL PRIMARY KEY,
+    seller_name VARCHAR(50) NOT NULL,
+    user_id INTEGER REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Currency(
+    currency_id SERIAL PRIMARY KEY,
+    currency VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Manufacturer(
+    manufacturer_country_id SERIAL PRIMARY KEY,
+    manufacturer_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE EngineType(
+    engine_type_id SERIAL PRIMARY KEY,
+    engine_type VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Orders(
+    order_id SERIAL PRIMARY KEY,
+    seller_id INTEGER REFERENCES Seller(seller_id),
+    zakaz_date DATE NOT NULL,
+    zakaz_status VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Boat(
+    boat_id SERIAL PRIMARY KEY,
+    model_name VARCHAR(50) NOT NULL,
+    engine_capacity REAL NOT NULL,
+    cylinder_count INTEGER NOT NULL,
+    engine_power INTEGER NOT NULL,
+    torque REAL NOT NULL,
+    max_speed INTEGER NOT NULL,
+    seating_capacity INTEGER NOT NULL,
+    length REAL NOT NULL,
+    width REAL NOT NULL,
+    height REAL NOT NULL,
+    fuel_consumption_90 REAL NOT NULL,
+    fuel_consumption_120 REAL NOT NULL,
+    boat_weight REAL NOT NULL,
+    manufacturer_country_id INTEGER REFERENCES Manufacturer(manufacturer_country_id),
+    manufacturer_name VARCHAR(50) NOT NULL,
+    keel_transom INTEGER NOT NULL,
+    keel_midsection INTEGER NOT NULL,
+    production_date DATE NOT NULL,
+    price NUMERIC(10, 2),
+    currency_id INTEGER REFERENCES Currency(currency_id),
+    boat_type_id INTEGER REFERENCES BoatType(boat_type_id),
+    engine_type_id INTEGER REFERENCES EngineType(engine_type_id)
+);
+
+CREATE TABLE CustomerOrder(
+    customer_order_id SERIAL PRIMARY KEY,
+    customer_id INTEGER REFERENCES Customers(customer_id),
+    order_id INTEGER REFERENCES Orders(order_id)
+);
+
+CREATE TABLE Suppliers(
+    supplier_id SERIAL PRIMARY KEY,
+    supplier_name VARCHAR(50) NOT NULL,
+    supplier_adress VARCHAR(50) NOT NULL,
+    supplier_phone VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE OrderBoat(
+    order_boat_id SERIAL PRIMARY KEY,
+    order_id INTEGER REFERENCES Orders(order_id),
+    boat_id INTEGER REFERENCES Boat(boat_id)
+);
+
+CREATE TABLE Agreement(
+    agreement_id SERIAL PRIMARY KEY,
+    agreement_date DATE NOT NULL,
+    boat_id INTEGER REFERENCES Boat(boat_id)
+);
+
+CREATE TABLE AgreementSupplier(
+    agreement_supplier_id SERIAL PRIMARY KEY,
+    agreement_id INTEGER REFERENCES Agreement(agreement_id),
+    supplier_id INTEGER REFERENCES Suppliers(supplier_id)
+);
+
+
+
+
+
+
+
+-- Заполнение таблицы BoatType
+INSERT INTO BoatType (boat_type_id, boat_type)
+VALUES 
+    (1, 'Скоростной катер'),
+    (2, 'Яхта'),
+    (3, 'Лодка'),
+    (4, 'Катамаран');
+
+-- Заполнение таблицы UserTypes
+INSERT INTO UserTypes (user_type_id, user_type)
+VALUES 
+    (1, 'Админ'),
+    (2, 'Пользователь'),
+    (3, 'Продавец');
+
+-- Заполнение таблицы Users
+INSERT INTO Users (login, password, customer_name, customer_adress, customer_phone, is_legal_entity, user_type_id)
+VALUES 
+    ('admin', 'admin', 'admin', 'admin', 'admin', false, 1),
+    ('user1', 'user1', 'Пользователь1', 'Адресс1', '+375333211234', true, 2),
+    ('seller1', 'seller1', 'Продавца нет', 'seller1', 'seller1', false, 3),
+    ('user2', 'user2', 'Пользователь2', 'Адресс2', '+375291234567', true, 2),
+    ('seller2', 'seller2', 'seller2', 'seller2', 'seller2', false, 3)
+
+
+
+-- Заполнение таблицы Currency
+INSERT INTO Currency (currency_id, currency)
+VALUES 
+    (1, 'USD'),
+    (2, 'EUR'),
+    (3, 'BYN');
+
+-- Заполнение таблицы Manufacturer
+INSERT INTO Manufacturer (manufacturer_country_id, manufacturer_name)
+VALUES 
+    (1, 'США'),
+    (2, 'Германия'),
+    (3, 'Италия');
+
+-- Заполнение таблицы EngineType
+INSERT INTO EngineType (engine_type_id, engine_type)
+VALUES 
+    (1, 'Дизельный'),
+    (2, 'Бензиновый'),
+    (3, 'Электрический');
+
+-- Заполнение таблицы Boat
+INSERT INTO Boat (boat_id, model_name, engine_capacity, cylinder_count, engine_power, torque, max_speed, seating_capacity, length, width, height, fuel_consumption_90, fuel_consumption_120, boat_weight, manufacturer_country_id, manufacturer_name, keel_transom, keel_midsection, production_date, price, currency_id, boat_type_id, engine_type_id)
+VALUES 
+    (1, 'Speedy2000', 2500.0, 6, 350, 420.5, 120, 6, 10.5, 3.5, 2.0, 8.0, 12.0, 1500.0, 1, 'SpeedyBoats Inc.', 3, 2, '2023-01-01', 25000.00, 1, 1, 2),
+    (2, 'LuxuryYacht', 4000.0, 8, 550, 680.2, 150, 12, 20.0, 5.0, 4.0, 15.0, 20.0, 3000.0, 2, 'LuxuryMarine GmbH', 5, 4, '2023-02-15', 80000.00, 2, 2, 1);
+
+
+-- Заполнение таблицы Suppliers
+INSERT INTO Suppliers (supplier_id, supplier_name, supplier_adress, supplier_phone)
+VALUES 
+    (1, 'BoatManufacturers Co.', '789 Supplier St, Smalltown', '+5551234567'),
+    (2, 'YachtProducers Ltd.', '101 Shipyard Ave, Harbor City', '+9998765432');
+
+
+
+
+
+
+
+
+
+--Триггер на добавление клиента
+CREATE OR REPLACE FUNCTION add_to_customers()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.user_type_id = 2 THEN
+        INSERT INTO Customers(user_id)
+        VALUES (NEW.user_id);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_into_customers
+AFTER INSERT ON Users
+FOR EACH ROW
+WHEN (NEW.user_type_id = 2)
+EXECUTE FUNCTION add_to_customers();
+
+
+--Триггер на добавление продавца
+CREATE OR REPLACE FUNCTION add_to_seller()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.user_type_id = 3 THEN
+        INSERT INTO Seller(seller_name, user_id)
+        VALUES (NEW.customer_name, NEW.user_id);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_into_seller
+AFTER INSERT ON Users
+FOR EACH ROW
+WHEN (NEW.user_type_id = 3)
+EXECUTE FUNCTION add_to_seller();
+
+
+
+
+
+

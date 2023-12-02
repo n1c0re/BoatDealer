@@ -5,17 +5,19 @@ const registerRouter = express.Router()
 
 //Регистрация
 registerRouter.post('/', async (req, res) => {
-	console.log(req.body)
 	const client = await startConnection()
-
-	const query = `INSERT INTO Users (login, is_legal_entity, password, user_name, user_type) VALUES ($1, $2, $3, $4, 'Пользователь')`
+	
+	const query = `INSERT INTO Users (login, password, customer_name, customer_adress, customer_phone, is_legal_entity, user_type_id) VALUES ($1, $2, $3, $4, $5, $6, 2)`
 	const values = [
 		req.body['login'],
-		req.body['entity'],
 		req.body['password'],
 		req.body['username'],
+		req.body['adress'],
+		req.body['phone'],
+		req.body['entity'],
 	]
-
+	
+	console.log(values)
 	try {
 		const response = await client
 			.query(query, values)

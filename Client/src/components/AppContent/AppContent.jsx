@@ -4,10 +4,10 @@ import { AuthContext } from '../../AuthContext'
 import LoginPage from '../LoginPage/LoginPage'
 import RegisterPage from '../RegisterPage/RegisterPage'
 import Header from '../Header/Header'
-import CarDetails from '../CarDetails/CarDetails'
+import BoatDetails from '../CarDetails/BoatDetails'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import AdminPanel from '../AdminPanel/AdminPanel'
-import CarCatalog from '../CarCatalog/CarCatalog'
+import BoatsCatalog from '../BoatsCatalog/BoatsCatalog'
 import Cabinet from '../Cabinet/Cabinet'
 
 function AppContent() {
@@ -15,12 +15,12 @@ function AppContent() {
 	console.log(loggedInUser)
 
 	if (loggedInUser) {
-		if (loggedInUser.user_type === 'Пользователь') {
+		if (loggedInUser.user_type_id === 2) {
 			return (
 				<BrowserRouter>
 					<div className='App'>
 						<Routes>
-							<Route path='/car/:carId' element={<Header />} />
+							<Route path='/boat/:boatId' element={<Header />} />
 							<Route path='/dashboard' element={<Header />} />
 							<Route path='/cabinet' element={<Header />} />
 						</Routes>
@@ -31,8 +31,8 @@ function AppContent() {
 									element={<Navigate to='/dashboard' />}
 								/>
 								<Route path='/' element={<Navigate to='/dashboard' />} />
-								<Route path='/car/:carId' element={<CarDetails />} />
-								<Route path='/dashboard' element={<CarCatalog />} />
+								<Route path='/boat/:boatId' element={<BoatDetails />} />
+								<Route path='/dashboard' element={<BoatsCatalog />} />
 								<Route path='*' element={<NotFoundPage />} />
 								<Route path='/cabinet' element={<Cabinet />} />
 							</Routes>
@@ -40,12 +40,12 @@ function AppContent() {
 					</div>
 				</BrowserRouter>
 			)
-		} else if (loggedInUser.user_type === 'Админ') {
+		} else if (loggedInUser.user_type_id === 1) {
 			return (
 				<BrowserRouter>
 					<div className='App'>
 						<Routes>
-							<Route path='/car/:carId' element={<Header />} />
+							<Route path='/boat/:boatId' element={<Header />} />
 							<Route path='/dashboard' element={<Header />} />
 							<Route path='/admin' element={<Header />} />
 						</Routes>
@@ -56,8 +56,8 @@ function AppContent() {
 									element={<Navigate to='/dashboard' />}
 								/>
 								<Route path='/' element={<Navigate to='/dashboard' />} />
-								<Route path='/car/:carId' element={<CarDetails />} />
-								<Route path='/dashboard' element={<CarCatalog />} />
+								<Route path='/boat/:boatId' element={<BoatDetails />} />
+								<Route path='/dashboard' element={<BoatsCatalog />} />
 								<Route path='/admin' element={<AdminPanel />} />
 								<Route path='*' element={<NotFoundPage />} />
 							</Routes>

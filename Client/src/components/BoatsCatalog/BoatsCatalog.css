@@ -1,9 +1,9 @@
-﻿.car-catalog {
+﻿.boat-catalog {
     display: flex;
     flex-wrap: wrap;
 }
 
-.car-tile {
+.boat-tile {
     border: 1px solid #ccc;
     border-radius: 5px;
     margin: 10px;
@@ -12,12 +12,12 @@
     box-shadow: 0 0 5px #ccc;
 }
 
-.car-link {
+.boat-link {
     text-decoration: none;
     color: #000;
 }
 
-.car-tile:hover {
+.boat-tile:hover {
     box-shadow: 0 0 10px #007bff;
 }
 

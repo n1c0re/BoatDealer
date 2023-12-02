@@ -8,7 +8,7 @@ const client = await startConnection()
 orderRouter.post('/', async (req, res) => {
 	const { seller_id, zakaz_date, zakaz_status } = req.body
 
-	const query = `INSERT INTO Zakaz (seller_id, zakaz_date, zakaz_status) VALUES ($1, $2, $3) RETURNING zakaz_id`
+	const query = `INSERT INTO Orders (seller_id, zakaz_date, zakaz_status) VALUES ($1, $2, $3) RETURNING order_id`
 	const values = [seller_id, zakaz_date, zakaz_status]
 
 	try {
@@ -16,9 +16,9 @@ orderRouter.post('/', async (req, res) => {
 			.query(query, values)
 			.then(response => response.rows)
 
-		const insertedZakazId = response[0].zakaz_id
+		const insertedZakazId = response[0].order_id
 
-		res.json({ success: true, zakaz_id: insertedZakazId })
+		res.json({ success: true, order_id: insertedZakazId })
 	} catch (error) {
 		console.error('Error:', error)
 		res
@@ -27,11 +27,11 @@ orderRouter.post('/', async (req, res) => {
 	}
 })
 
-orderRouter.post('/car', async (req, res) => {
-	const { car_id, zakaz_id } = req.body
+orderRouter.post('/boat', async (req, res) => {
+	const { car_id, order_id } = req.body
 
-	const query = `INSERT INTO carzakaz (car_id, zakaz_id) VALUES ($1, $2)`
-	const values = [car_id, zakaz_id]
+	const query = `INSERT INTO OrderBoat (boat_id, order_id) VALUES ($1, $2)`
+	const values = [car_id, order_id]
 
 	try {
 		const response = await client
@@ -43,12 +43,12 @@ orderRouter.post('/car', async (req, res) => {
 	}
 })
 
-orderRouter.get('/client', async (req, res) => {
-	const { client_id } = req.query
+orderRouter.get('/customer', async (req, res) => {
+	const { customer_id } = req.query
 
-	console.log('client_id: ', client_id)
+	console.log('customer_id: ', customer_id)
 
-	if (!client_id) {
+	if (!customer_id) {
 		return res
 			.status(400)
 			.json({ success: false, error: 'User ID is required' })
@@ -58,23 +58,27 @@ orderRouter.get('/client', async (req, res) => {
 
 	const query = `
     SELECT 
-    Zakaz.zakaz_id, 
-    Seller.seller_name, 
-    Zakaz.zakaz_date, 
-    Zakaz.zakaz_status,
-    Car.car_id, 
-    Car.name AS car_name, 
-    Currency.currency, 
-    Car.price AS car_price
-FROM Zakaz
-INNER JOIN ClientZakaz ON Zakaz.zakaz_id = ClientZakaz.zakaz_id
-INNER JOIN CarZakaz ON Zakaz.zakaz_id = CarZakaz.zakaz_id
-INNER JOIN Car ON CarZakaz.car_id = Car.car_id
-INNER JOIN Seller ON Zakaz.seller_id = Seller.seller_id
-INNER JOIN Currency ON Car.currency_id = Currency.currency_id
-WHERE ClientZakaz.client_id = $1;
+    Orders.order_id,
+    Customers.customer_id,
+    Orders.seller_id,
+    Sellers.seller_name,
+    Orders.zakaz_date,
+    Orders.zakaz_status,
+    Boat.model_name AS boat_name,
+    Boat.price AS boat_price,
+    Boat.boat_id,
+    Currency.currency AS boat_currency
+FROM Customers
+INNER JOIN Users ON Customers.user_id = Users.user_id
+INNER JOIN CustomerOrder ON Customers.customer_id = CustomerOrder.customer_id
+INNER JOIN Orders ON CustomerOrder.order_id = Orders.order_id
+INNER JOIN Seller Sellers ON Orders.seller_id = Sellers.seller_id
+INNER JOIN OrderBoat ON Orders.order_id = OrderBoat.order_id
+INNER JOIN Boat ON OrderBoat.boat_id = Boat.boat_id
+INNER JOIN Currency ON Boat.currency_id = Currency.currency_id
+WHERE Customers.customer_id = $1;
   `
-	const values = [client_id]
+	const values = [customer_id]
 
 	try {
 		const response = await client
@@ -103,7 +107,7 @@ orderRouter.delete('/', async (req, res) => {
 	const client = await startConnection()
 
 	const query = `
-        DELETE FROM CarZakaz WHERE zakaz_id = $1;
+        DELETE FROM OrderBoat WHERE order_id = $1;
     `
 
 	const values = [orderId]
@@ -124,23 +128,24 @@ orderRouter.get('/', async (req, res) => {
 
 	const query = `
     SELECT 
-    Zakaz.zakaz_id, 
-    Seller.seller_name, 
-    Zakaz.zakaz_date, 
-    Zakaz.zakaz_status,
-    Car.car_id, 
-    Car.name AS car_name, 
-    Currency.currency, 
-    Car.price AS car_price,
-    Users.user_name AS client_name
-FROM Zakaz
-INNER JOIN ClientZakaz ON Zakaz.zakaz_id = ClientZakaz.zakaz_id
-INNER JOIN CarZakaz ON Zakaz.zakaz_id = CarZakaz.zakaz_id
-INNER JOIN Car ON CarZakaz.car_id = Car.car_id
-INNER JOIN Seller ON Zakaz.seller_id = Seller.seller_id
-INNER JOIN Currency ON Car.currency_id = Currency.currency_id
-INNER JOIN Client ON Client.client_id = ClientZakaz.client_id
-INNER JOIN Users ON Client.user_id = Users.user_id;
+    Orders.order_id,
+    Customers.customer_id,
+    Orders.seller_id,
+    Sellers.seller_name,
+    Orders.zakaz_date,
+    Orders.zakaz_status,
+    Boat.model_name AS boat_name,
+    Boat.price AS boat_price,
+    Boat.boat_id,
+    Currency.currency AS boat_currency
+FROM Customers
+INNER JOIN Users ON Customers.user_id = Users.user_id
+INNER JOIN CustomerOrder ON Customers.customer_id = CustomerOrder.customer_id
+INNER JOIN Orders ON CustomerOrder.order_id = Orders.order_id
+INNER JOIN Seller Sellers ON Orders.seller_id = Sellers.seller_id
+INNER JOIN OrderBoat ON Orders.order_id = OrderBoat.order_id
+INNER JOIN Boat ON OrderBoat.boat_id = Boat.boat_id
+INNER JOIN Currency ON Boat.currency_id = Currency.currency_id
   `
 	try {
 		const response = await client.query(query).then(response => response.rows)
@@ -159,14 +164,14 @@ INNER JOIN Users ON Client.user_id = Users.user_id;
 orderRouter.post('/submit', async (req, res) => {
 	const { sellerId, orderId } = req.body
 
-	console.log(sellerId, orderId);
+	console.log(sellerId, orderId)
 	const client = await startConnection()
 
 	const query = `
-    UPDATE zakaz SET seller_id = $1, zakaz_status = 'Подтвержден' WHERE zakaz_id = $2 
+    UPDATE Orders SET seller_id = $1, zakaz_status = 'Подтвержден' WHERE order_id = $2 
   `
 	const values = [sellerId, orderId]
-	
+
 	try {
 		const response = await client
 			.query(query, values)
